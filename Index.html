@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Koolcindy7 — Portfolio</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --accent:#7df9ff;
+  --glass:rgba(255,255,255,0.06);
+  --border:rgba(255,255,255,0.14);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+
+html,body{
+  background:radial-gradient(circle at top,#0b0f1a,#000);
+  color:#fff;
+  font-family:Inter,sans-serif;
+  overflow-x:hidden;
+}
+
+/* CANVAS SNOW */
+#snow{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+}
+
+/* GLOBAL */
+section{
+  padding:5rem 2rem;
+  position:relative;
+  z-index:1;
+}
+
+h1{
+  font-size:clamp(2.4rem,5vw,4rem);
+  font-weight:800;
+  letter-spacing:-.04em;
+}
+
+.fade{
+  opacity:0;
+  transform:translateY(40px);
+  transition:opacity .8s ease, transform .8s ease;
+}
+
+.fade.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* HERO */
+.hero{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+
+.profile{
+  width:140px;
+  height:140px;
+  margin:0 auto 3rem;
+  position:relative;
+}
+
+.profile img{
+  width:100%;
+  height:100%;
+  border-radius:70%;
+}
+
+.ring{
+  position:absolute;
+  inset:-0px;
+  border-radius:50%;
+  border:5px solid var(--accent);
+  filter:drop-shadow(0 0 25px var(--accent));
+  animation:spin 1s linear infinite;
+}
+
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* DYNAMIC TEXT */
+.dynamic-text{
+  background:linear-gradient(120deg,#007de4,var(--accent),#fff);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  animation:glow 6s linear infinite;
+}
+
+@keyframes glow{
+  0%{background-position:0%}
+  100%{background-position:200%}
+}
+
+.hero p{
+  opacity:.7;
+  max-width:620px;
+  margin:1.2rem auto 0;
+}
+
+/* BUTTONS */
+.buttons{
+  margin-top:3rem;
+  display:flex;
+  flex-direction:column;
+  gap:1rem;
+  align-items:center;
+}
+
+.scan-btn {
+  width: 240px;
+  padding: 1rem;
+  border-radius: 999px;
+  border: 2px solid transparent; /* keep border for shape */
+  background: var(--glass);
+  backdrop-filter: blur(18px);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  position: relative;
+  overflow: hidden;
+  transition: color 0.3s ease;
+}
+
+/* Use pseudo-element for animated rainbow border glow */
+.scan-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  padding: 2px; /* border thickness */
+  background: linear-gradient(90deg, #4285F4, #34A853, #FBBC05, #EA4335, #4285F4);
+  background-size: 300% 300%;
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  animation: glowBorder 3s linear infinite;
+}
+
+/* Show glow only on hover */
+.scan-btn:hover::before {
+  opacity: 1;
+}
+
+/* Animate gradient movement */
+@keyframes glowBorder {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+
+@keyframes shine {
+  to { transform: translateX(100%); }
+}
+
+
+
+
+/* SERVICES */
+.services{
+  padding:4rem 2rem;
+}
+
+.services-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:1.2rem;
+  margin-top:2.5rem;
+}
+
+.service{
+  background:var(--glass);
+  backdrop-filter:blur(20px);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:1.6rem;
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+  transform:translateY(40px) scale(.96);
+  opacity:0;
+  transition:all .6s ease;
+}
+
+.service::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to top,transparent,rgba(253, 253, 253, 0.15),transparent);
+  transform:translateY(120%);
+  transition:.6s ease;
+}
+
+.service:hover::after{
+  transform:translateY(-120%);
+}
+
+.service h3{
+  font-size:1.1rem;
+  margin-bottom:.4rem;
+}
+
+.service p{
+  font-size:.9rem;
+  opacity:.6;
+  max-height:0;
+  overflow:Hidden;
+  transition:max-height .4s ease, opacity .4s ease;
+}
+
+.service:hover{
+  transform:translateY(-6px) scale(1);
+}
+
+.service:hover p{
+  max-height:80px;
+  opacity:.85;
+}
+
+.service.show{
+  opacity:1;
+  transform:translateY(0) scale(1);
+}
+
+/* WORK LOOP */
+.work{
+  overflow:hidden;
+}
+
+.track{
+  display:flex;
+  width:max-content;
+  animation:loop 28s linear infinite;
+}
+
+.track img{
+  height:260px;
+  margin-right:2rem;
+  border-radius:18px;
+  box-shadow:0 30px 60px rgba(0,0,0,.6);
+}
+
+@keyframes loop{
+  to{transform:translateX(-50%)}
+}
+
+/* MOBILE */
+@media(max-width:768px){
+  .track img{height:200px}
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="snow"></canvas>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="fade">
+    <div class="profile">
+      <img src="https://i.ibb.co/cc6s5cs7/Untitled110-20250804202350.jpg">
+      <div class="ring"></div>
+    </div>
+
+    <h1 class="dynamic-text">I am, Koolcindy7</h1>
+    <p>2D Animator sharing Original Animation, Artz and creative Videos. Distinctive. </p>
+
+    <div class="buttons">
+      <a class="scan-btn" href="https://www.threads.net/@koolcindy7">Threads</a>
+      <a class="scan-btn" href="https://www.instagram.com/koolcindy7">Instagram</a>
+      <a class="scan-btn" href="https://www.youtube.com/@koolcindy7">YouTube</a>
+      <a class="scan-btn hire" href="https://ig.me/m/koolcindy7">Hire Me</a>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services">
+  <h1 class="fade">ABOUT ME</h1>
+
+  <div class="services-grid">
+    <div class="service">
+      <h3>Who is koolcindy7?</h3>
+      <p>Hey there, I am Krishna and koolcindy7 is my another identity as an animator. Youtube family over 1K+ and 800+ on Instagram.</p>
+    </div>
+    <div class="service">
+      <h3>Achievments</h3>
+      <p>Visit Specials Highligts on Instagram.</p>
+    </div>
+    <div class="service">
+      <h3>Experiences</h3>
+      <p>4.5+ years in Animation field and Drawing since I born. Love to Draw.</p>
+    </div>
+    <div class="service">
+      <h3>Softwares i use for Animating and Artworks?</h3>
+      <p>Ibis paint for artwork and for Animation Flipaclip.  </p>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section class="work">
+  <h1 class="fade">ArtWork Showcase</h1>
+  <div class="track">
+    <img src="https://i.ibb.co/dsSWVD9h/Untitled172-Restored2-20250916195039.png">
+    <img src="https://i.ibb.co/Fq5FF3G1/Untitled73-20250510160317.png">
+    <img src="https://i.ibb.co/kscBFPS9/Untitled6-20251214190803.png">
+    <img src="https://i.ibb.co/NdJD181H/Untitled133-20260401151613.png">
+    <img src="https://i.ibb.co/qFrj1D43/Untitled164-20260414004545.png">
+    <img src="https://i.ibb.co/hxZcSvSV/Untitled95-20260321195621.png">
+    <img src="https://i.ibb.co/tT8ZHrtv/Untitled8-20260120153928.png">
+    <img src="https://i.ibb.co/d47j1Br3/Untitled77-20260313213746.png">
+    <img src="https://i.ibb.co/GykjrYf/Untitled177-Restored-20251030232140.png">
+    <img src="https://i.ibb.co/TxV41VrY/one-of-my-favorite-artist-made-ts-for-me-pfp-material-koolcindy7-thank-youiii-so-much-1.webp">
+  </div>
+</section>
+
+<script>
+/* SNOW */
+const c=document.getElementById("snow"),x=c.getContext("2d");
+let w,h,f;
+
+function r(){
+  w=c.width=innerWidth;
+  h=c.height=innerHeight;
+  f=[...Array(120)].map(()=>({
+    x:Math.random()*w,
+    y:Math.random()*h,
+    r:Math.random()*1.5+.5,
+    s:Math.random()*.6+.2
+  }));
+}
+function d(){
+  x.clearRect(0,0,w,h);
+  x.fillStyle="rgba(255,255,255,.8)";
+  f.forEach(p=>{
+    x.beginPath();
+    x.arc(p.x,p.y,p.r,0,7);
+    x.fill();
+    p.y+=p.s;
+    if(p.y>h){p.y=0;p.x=Math.random()*w}
+  });
+  requestAnimationFrame(d);
+}
+r();d();addEventListener("resize",r);
+
+/* SCROLL FADE */
+const obs=new IntersectionObserver(e=>{
+  e.forEach(i=>{
+    i.target.classList.toggle("show",i.isIntersecting);
+  });
+},{threshold:.10});
+
+document.querySelectorAll(".fade,.service").forEach(el=>obs.observe(el));
+</script>
+<section class="songs-ghibli">
+
+<style>
+.songs-ghibli{
+  padding:5rem 2rem;
+  text-align:center;
+}
+
+.songs-ghibli h1{
+  font-size:clamp(2rem,5vw,3rem);
+  margin-bottom:2rem;
+}
+
+/* WRAP */
+.ghibli-wrap{
+  display:flex;
+  justify-content:center;
+  gap:2rem;
+  flex-wrap:wrap;
+  perspective:1200px;
+}
+
+/* CARD (NOW LINK) */
+.ghibli-card{
+  width:260px;
+  border-radius:20px;
+  overflow:hidden;
+  background:rgba(255,255,255,0.06);
+  backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,0.14);
+  position:relative;
+  transform-style:preserve-3d;
+  transition:transform .3s ease, box-shadow .3s ease;
+  animation:float 6s ease-in-out infinite;
+
+  text-decoration:none;
+  color:#fff;
+  display:block;
+}
+
+.ghibli-card:nth-child(2){animation-delay:1s}
+.ghibli-card:nth-child(3){animation-delay:2s}
+
+/* FLOAT */
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-18px)}
+}
+
+/* IMAGE */
+.ghibli-card img{
+  width:100%;
+  height:170px;
+  object-fit:cover;
+  transition:transform .5s ease;
+}
+
+/* CONTENT */
+.card-content{
+  padding:1.2rem;
+}
+
+.card-content h3{
+  font-size:1.1rem;
+}
+
+.card-content p{
+  font-size:.85rem;
+  opacity:.7;
+}
+
+/* GLOW */
+.ghibli-card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:radial-gradient(circle at 50% 20%,rgba(125,249,255,.2),transparent);
+  pointer-events:none;
+}
+
+/* HOVER */
+.ghibli-card:hover{
+  box-shadow:0 25px 60px rgba(0,0,0,.6);
+}
+
+.ghibli-card:hover img{
+  transform:scale(1.05);
+}
+
+/* CLICK RIPPLE */
+.ripple{
+  position:absolute;
+  border-radius:50%;
+  background:rgba(255,255,255,.3);
+  transform:scale(0);
+  animation:ripple .6s linear;
+  pointer-events:none;
+}
+
+@keyframes ripple{
+  to{
+    transform:scale(4);
+    opacity:0;
+  }
+}
+
+/* PARTICLES */
+.particle{
+  position:absolute;
+  width:4px;
+  height:4px;
+  background:#ffffff;
+  border-radius:50%;
+  opacity:.6;
+  animation:floatParticle linear infinite;
+}
+
+@keyframes floatParticle{
+  from{transform:translateY(0)}
+  to{transform:translateY(-200px)}
+}
+</style>
+
+<h1>Song Projects</h1>
+
+<div class="ghibli-wrap">
+
+  <a href="https://www.instagram.com/reel/DWbVJM6knpj/?igsh=dnMwOHYwb3lpZjR3" target="_blank" class="ghibli-card">
+    <img src="https://i.ibb.co/GyYYZBG/Untitled166-20260416072040.png">
+    <div class="card-content">
+      <h3>Bhasudi</h3>
+      <p>Song by Tushar nagar</p>
+    </div>
+  </a>
+
+  <a href="https://www.instagram.com/reel/DW1OMqBE316/?igsh=MWQ0cDFieWl0M2c3aw==" target="_blank" class="ghibli-card">
+    <img src="https://i.ibb.co/SD295WnW/Untitled166-20260416072248.png">
+    <div class="card-content">
+      <h3>Braj ki chhori</h3>
+      <p>Song by Ark</p>
+    </div>
+  </a>
+</div>
+
+<script>
+const cards = document.querySelectorAll(".songs-ghibli .ghibli-card");
+
+/* TILT + RIPPLE */
+cards.forEach(card=>{
+  card.addEventListener("mousemove",e=>{
+    const rect=card.getBoundingClientRect();
+    const x=e.clientX-rect.left;
+    const y=e.clientY-rect.top;
+
+    const rotateY=(x/rect.width - .5)*20;
+    const rotateX=(y/rect.height - .5)*-20;
+
+    card.style.transform =
+      `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px)`;
+  });
+
+  card.addEventListener("mouseleave",()=>{
+    card.style.transform="";
+  });
+
+  card.addEventListener("click",e=>{
+    const ripple=document.createElement("span");
+    ripple.className="ripple";
+
+    const rect=card.getBoundingClientRect();
+    ripple.style.left = e.clientX - rect.left + "px";
+    ripple.style.top = e.clientY - rect.top + "px";
+
+    card.appendChild(ripple);
+    setTimeout(()=>ripple.remove(),600);
+  });
+});
+
+/* PARTICLES */
+const section=document.querySelector(".songs-ghibli");
+
+for(let i=0;i<20;i++){
+  const p=document.createElement("div");
+  p.className="particle";
+
+  p.style.left=Math.random()*100+"%";
+  p.style.bottom="0px";
+  p.style.animationDuration=(3+Math.random()*5)+"s";
+
+  section.appendChild(p);
+}
+</script>
+
+</section>
+
+</body>
+</html>
